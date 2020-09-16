@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        #calendar{
+            width: 280px;
+            border: 1px solid #000000;
+            margin: 100px auto;
+        }
+        #calendar > p{
+            display: flex;
+        }
+        #calendar > h5{
+            text-align: center;
+        }
+        #calendar > p > span{
+            padding: 0 10px;
+        }
+        #prem, #nextm{
+            cursor: pointer;
+        }
+        #year{
+            flex: 1;
+            text-align: center;
+        }
+        #title{
+            overflow: hidden;
+            list-style: none;
+            background: #cccccc;
+        }
+        #title > li{
+            float: left;
+            width: 40px;
+            height: 26px;
+            line-height: 26px;
+            text-align: center;
+        }
+        #date{
+            overflow: hidden;
+            list-style: none;
+        }
+        #date > li{
+            float: left;
+            width: 34px;
+            height: 34px;
+            margin: 1px 1px;
+            border: 2px solid rgba(0,0,0,0);
+            line-height: 34px;
+            text-align: center;
+            cursor: pointer;
+        }
+        #date > .hover:hover{
+            border: 2px solid red;
+        }
+        .active{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar">
+        <p>
+            <span id="prem">上一月</span>
+            <span id="year">2000</span>
+            <span id="nextm">下一月</span>
+        </p>
+        <h5 id="month">九月</h5>
+        <ul id="title">
+            <li>日</li>
+            <li>一</li>
+            <li>二</li>
+            <li>三</li>
+            <li>四</li>
+            <li>五</li>
+            <li>六</li>
+        </ul>
+        <ul id="date">
+        </ul>
+    </div>
+
+    <script>
+        // 获取默认时间对象(设置为全局)
+        let date = new Date()
+        // 当页面第一次进入时渲染一下
+        add() 
+        function add() {
+            // 获取当前的年份
+            let cYear = date.getFullYear()
+            // 获取当前月份
+            let cMonth = date.getMonth()
+            // 获取当前天
+            let cDay = date.getDate()
+
+            let arr = [
+                "一月","二月","三月","四月","五月","六月",
+                "七月","八月","九月","十月","十一月","十二月",
+            ]
+
+            //  当年当月的第一天是周几
+            let weekOfFirstDay =  new Date(cYear, cMonth, 1).getDay()
+            //  获取当月的天数(下一个月扣去一天，得到本月倒数第二天，再加1)
+            let monthDays = new Date(cYear, cMonth+1, -1).getDate() + 1 
+
+            document.getElementById('year').innerHTML = cYear
+            document.getElementById('month').innerHTML = arr[cMonth]
+
+            let html = ""
+            for(let i=0; i<weekOfFirstDay; i++) {
+                html += `<li></li>`
+            }
+            for(let i=1; i<=monthDays; i++) {
+                if (i == cDay) {
+                    html += `<li class="active">${i}</li>`
+                } else {
+                    html += `<li class="hover">${i}</li>`
+                }
+            }
+            document.getElementById('date').innerHTML = html
+        }
+
+        document.getElementById('prem').addEventListener('click', function() {
+            date.setMonth(date.getMonth() - 1)
+            add()
+        })
+        document.getElementById('nextm').addEventListener('click', function() {
+            date.setMonth(date.getMonth() + 1)
+            add()
+        })
+
+    </script>
+</body>
+</html>
