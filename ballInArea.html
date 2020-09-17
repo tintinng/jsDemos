@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM动画</title>
+    <style>
+        #container{
+            position: absolute;
+            width: 800px;
+            height: 600px;
+            background: #cccccc;
+            top: 100px;
+            left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <input type="button" value="pop the ball" id="btn">
+    <div id="container">
+
+    </div>
+
+    <script>
+        let container = document.getElementById('container')
+        let colors = ['red','yellow','blue','green','white','pink']
+        document.getElementById('btn').onclick = function() {
+            let ball = document.createElement('div')
+            ball.style.cssText = "position:absolute;border-radius:50%"
+            ball.style.width = "50px"
+            ball.style.height = "50px"
+            ball.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
+
+            // 先添加入dom树中，才能取到ball的clientHeight和clientWidth
+            container.appendChild(ball)
+            let left = container.clientWidth/2 - ball.clientHeight/2
+            let top = container.clientHeight/2 - ball.clientWidth/2
+            ball.style.left = `${left}px`
+            ball.style.top = `${top}px`
+
+            let x = 10
+            let y = 10
+            let move2 = setInterval(function() {
+                left += x
+                top += y
+                if(top < 0 || top > container.offsetHeight - ball.offsetHeight) {
+                    y = -y
+                }
+                if(left < 0 || left > container.offsetWidth - ball.offsetWidth) {
+                    x = -x
+                }
+                ball.style.left = `${left}px`
+                ball.style.top = `${top}px`
+            },30)   
+        }
+
+        
+    </script>
+</body>
+</html>
